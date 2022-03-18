@@ -1768,14 +1768,6 @@
       "name": "Sony",
       "items": [
         {
-          "id": 5001,
-          "name": "s l225",
-          "imageName": "s-l225.jpg",
-          "price": 401,
-          "discountRate": 23,
-          "review": 5
-        },
-        {
           "id": 5002,
           "name": "sony xperia 1",
           "imageName": "sony-xperia-1.jpg",
