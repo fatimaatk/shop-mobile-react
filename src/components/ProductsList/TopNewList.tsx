@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 import ProductsType from "../../model/productType";
 import Pagination from "./Pagination";
 
-const AllProductsList = () => {
+const TopNewList = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productPerPage] = useState(12);
@@ -14,7 +14,7 @@ const AllProductsList = () => {
   }, []);
 
   const getData = async () => {
-    const response = await fetch(`http://localhost:3000/products`);
+    const response = await fetch(`http://localhost:3000/top-new-products`);
     const data = await response.json();
     setProducts(data);
   };
@@ -39,7 +39,7 @@ const AllProductsList = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="product-bit-title text-center">
-                <h2 className="text-capitalize">All Brands</h2>
+                <h2 className="text-capitalize">Top New Products</h2>
               </div>
             </div>
           </div>
@@ -70,4 +70,4 @@ const AllProductsList = () => {
   );
 };
 
-export default AllProductsList;
+export default TopNewList;

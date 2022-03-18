@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import "./../../css/style.css";
 
 import { useAppSelector, useAppDispatch } from "../../store/hook";
-import { increment } from "../../store/CartSlice";
 
 import ProductsType from "../../model/productType";
+import { addItemToCart, removeItemToCart } from "../../store/CartTotalSlice";
 
 const ProductCard: React.FC<{
   product: ProductsType;
@@ -14,12 +14,23 @@ const ProductCard: React.FC<{
   const { product } = props;
 
   //REDUX
-  const cart = useAppSelector((state) => state.cart);
-
+  const cartItem = useAppSelector((state) => state.cartItem);
   const dispatch = useAppDispatch();
 
   const incrementHandlerQty = () => {
-    dispatch(increment(product.price));
+    dispatch(
+      addItemToCart({
+        product,
+      })
+    );
+  };
+
+  const decrementHandlerQty = () => {
+    dispatch(
+      removeItemToCart({
+        product,
+      })
+    );
   };
 
   //méthode recherche image
@@ -76,6 +87,12 @@ const ProductCard: React.FC<{
             >
               Add to cart
             </button>
+            {/* <button
+              className="add_to_cart_button"
+              onClick={decrementHandlerQty}
+            >
+              Remove to cart
+            </button> */}
           </div>
         </div>
       </div>

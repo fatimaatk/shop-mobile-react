@@ -900,6 +900,7 @@ button[type="button"]:hover {
   margin-right: 15px;
 }
 .quantity input[type="number"] {
+  height: 37px;
   border: 1px solid #5a88ca;
   padding: 5px;
   width: 50px;
@@ -1025,7 +1026,7 @@ div.quantity input.minus {
   background: none repeat scroll 0 0 #5a88ca;
   border: medium none;
   color: #fff;
-  height: 25px;
+
   line-height: 15px;
   width: 25px;
 }

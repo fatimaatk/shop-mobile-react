@@ -34,10 +34,10 @@ const WidgetArea = () => {
           <div className="col-md-4">
             <div className="single-product-widget">
               <h2 className="product-wid-title">Top Sellers</h2>
-              <Link to={`/products`} className="wid-view-more ">
+              <Link to={`/products/top-sellers`} className="wid-view-more ">
                 View All
               </Link>
-              {topProducts.map((product, i) => (
+              {topProducts.splice(0, 3).map((product, i) => (
                 <WidgetsTop product={product} key={i} />
               ))}
             </div>
@@ -54,11 +54,11 @@ const WidgetArea = () => {
           <div className="col-md-4">
             <div className="single-product-widget">
               <h2 className="product-wid-title">Top New</h2>
-              <Link to={`/products`} className="wid-view-more">
+              <Link to={`/products/new-sellers`} className="wid-view-more">
                 View All
               </Link>
 
-              {newProducts.map((product, i) => (
+              {newProducts.splice(0, 3).map((product, i) => (
                 <WidgetNew product={product} key={i} />
               ))}
             </div>

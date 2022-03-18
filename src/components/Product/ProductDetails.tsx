@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 
+import { useAppSelector, useAppDispatch } from "../../store/hook";
+import { addItemToCart } from "../../store/CartTotalSlice";
+
+import Cookies from "js-cookie";
 import ProductsType from "../../model/productType";
 
 import productImage1 from "./../../assets/img/product-thumb-1.jpg";
@@ -13,30 +16,47 @@ import OtherBrands from "./otherBrands";
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
   const [image, setImage] = useState("");
+  const [productId, setProductId] = useState("");
   const [name, setName] = useState("");
+  const [product, setProduct] = useState([]);
   const [price, setPrice] = useState<ProductsType["price"]>(0);
   const [discountRate, setDiscountRate] = useState<number>(0);
   const [description, setDescription] = useState("");
-  const [brand, setBrand] = useState([]);
+  const [brand, setBrand] = useState<ProductsType[]>([]);
 
-  const counterCart = useSelector((state: RootStateOrAny) => state.counter);
-  const dispatch = useDispatch();
+  //REDUX
+  const cartItem = useAppSelector((state) => state.cartItem);
+
+  const dispatch = useAppDispatch();
 
   const incrementHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    dispatch({ type: "increment" });
+    dispatch(
+      addItemToCart({
+        product,
+      })
+    );
   };
+
+  const [cookiesItems, setCookiesItems] = useState<ProductsType[]>([]);
+
+  Cookies.set("product", JSON.stringify(product), {
+    expire: 0,
+    path: "",
+  });
 
   useEffect(() => {
     getData();
     getCategories();
-  }, [image, name, price, description, discountRate]);
+  }, [image, name, price, description, discountRate, productId]);
 
   const getData = async () => {
     const response = await fetch(`http://localhost:3000/products/${id}`);
     const data = await response.json();
+    setProduct(data);
+    setProductId(data.id);
     setImage(data.imageName);
     setName(data.name);
     setPrice(data.price);
@@ -167,13 +187,16 @@ const ProductDetails: React.FC = () => {
               <div className="single-sidebar">
                 <h2 className="sidebar-title">Others brands</h2>
                 <ul>
-                  {brand.map((brand, i) => (
-                    <OtherBrands
-                      key={i}
-                      brand={brand}
-                      categoryName={categoryName}
-                    />
-                  ))}
+                  {brand
+                    .filter((x) => x.name !== categoryName)
+                    .splice(0, 3)
+                    .map((brand, i) => (
+                      <OtherBrands
+                        key={i}
+                        brand={brand}
+                        categoryName={categoryName}
+                      />
+                    ))}
                 </ul>
               </div>
             </div>

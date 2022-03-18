@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductsType from "../../model/productType";
-import { BrandCategories } from "../Footer/BrandCategories";
-import ProductsList from "../ProductsList/ProductsList";
 
 const OtherBrands: React.FC<{ brand: ProductsType; categoryName: string }> = (
   props
 ) => {
-  const { brand } = props;
+  const { brand, categoryName } = props;
+
   return (
     <div>
       {" "}

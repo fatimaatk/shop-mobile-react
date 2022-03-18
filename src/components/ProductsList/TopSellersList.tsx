@@ -1,35 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-
-import ProductsType from "../../model/productType";
-
+import React from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
+import ProductsType from "../../model/productType";
 import Pagination from "./Pagination";
-import "./../../css/style.css";
 
-const ProductsList: React.FC = () => {
-  const [productsBrand, setProductsBrand] = useState([]);
-  const [brandName, setBrandName] = useState("");
-
+const TopSellersList = () => {
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productPerPage] = useState(12);
-  const { id } = useParams();
 
   useEffect(() => {
     getData();
-  }, [id]);
+  }, []);
 
   const getData = async () => {
-    const response = await fetch(`http://localhost:3000/products-lists/${id}`);
+    const response = await fetch(`http://localhost:3000/top-sellers-products`);
     const data = await response.json();
-    setProductsBrand(data.items);
-    setBrandName(data.name);
+    setProducts(data);
   };
 
   //Méthode pagination
   const indexOfLastProduct = currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  const currentProducts: ProductsType[] = productsBrand.slice(
+  const currentProducts: ProductsType[] = products.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -46,7 +39,7 @@ const ProductsList: React.FC = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="product-bit-title text-center">
-                <h2 className="text-capitalize">{brandName}</h2>
+                <h2 className="text-capitalize">Top Sellers Products</h2>
               </div>
             </div>
           </div>
@@ -57,7 +50,7 @@ const ProductsList: React.FC = () => {
         <div className="container ">
           <div className="row ">
             {currentProducts.map((product, i) => (
-              <ProductCard product={product} key={i} brandName={brandName} />
+              <ProductCard product={product} key={i} />
             ))}
           </div>
         </div>
@@ -66,7 +59,7 @@ const ProductsList: React.FC = () => {
         <div className="col-md-12">
           <Pagination
             productPerPage={productPerPage}
-            totalProducts={productsBrand.length}
+            totalProducts={products.length}
             currentPage={currentPage}
             paginate={paginate}
             setCurrentPage={setCurrentPage}
@@ -77,25 +70,4 @@ const ProductsList: React.FC = () => {
   );
 };
 
-export default ProductsList;
-
-//             <li className="page-item">
-//               <a className="page-link" href="#">
-//                 1
-//               </a>
-//             </li>
-//             <li className="page-item">
-//               <a className="page-link" href="#">
-//                 2
-//               </a>
-//             </li>
-//             <li className="page-item">
-//               <a className="page-link" href="#">
-//                 3
-//               </a>
-//             </li>
-//             <li className="page-item">
-//               <a className="page-link" href="#">
-//                 Next
-//               </a>
-//             </li>
+export default TopSellersList;

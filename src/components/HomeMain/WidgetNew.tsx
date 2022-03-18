@@ -46,8 +46,8 @@ const WidgetNew: React.FC<{ product: ProductsType }> = (props) => {
           <FontAwesomeIcon icon={faStar} />
         </div>
         <div className="product-wid-price">
-          <ins>${product.price}</ins>
-          <del>${priceNoDiscount}</del>
+          <ins>${product.price.toFixed(2)}</ins>
+          <del>${priceNoDiscount.toFixed(2)}</del>
         </div>
       </div>
     </>
