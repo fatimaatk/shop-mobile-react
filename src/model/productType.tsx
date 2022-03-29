@@ -1,7 +1,9 @@
 export interface ProductsType {
+  productId: number;
   id: number;
   name: string;
   imageName: string;
+  image: string;
   price: number;
   discountRate: number;
   review: number;
@@ -11,6 +13,7 @@ export interface ProductsType {
   productListId: number;
   brandName: string;
   loading: boolean;
+  product: {};
 }
 
 export default ProductsType;

@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import ProductsType from "../../model/productType";
 import Pagination from "./Pagination";
+import { useCookies } from "react-cookie";
 
-const TopNewList = () => {
+const RecentList = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productPerPage] = useState(12);
@@ -13,8 +14,13 @@ const TopNewList = () => {
     getData();
   }, []);
 
+  const [cookies] = useCookies(["products"]);
+  const myCookies = Object.values(cookies);
+
+  console.log(cookies);
+
   const getData = async () => {
-    const response = await fetch(`http://localhost:3000/top-new-products`);
+    const response = await fetch(`http://localhost:3000/top-sellers-products`);
     const data = await response.json();
     setProducts(data);
   };
@@ -39,7 +45,7 @@ const TopNewList = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="product-bit-title text-center">
-                <h2 className="text-capitalize">Top New Products</h2>
+                <h2 className="text-capitalize">Recently Viewed</h2>
               </div>
             </div>
           </div>
@@ -49,9 +55,15 @@ const TopNewList = () => {
         <div className="zigzag-bottom "></div>
         <div className="container ">
           <div className="row ">
-            {currentProducts.map((product, i) => (
-              <ProductCard product={product} key={i} />
-            ))}
+            {myCookies &&
+              myCookies.map((cookies) =>
+                cookies
+                  .filter((value: any) => Object.keys(value).length !== 0)
+
+                  .map((product: any, items: any) => (
+                    <ProductCard product={product} key={items} />
+                  ))
+              )}
           </div>
         </div>
       </div>
@@ -72,4 +84,4 @@ const TopNewList = () => {
   );
 };
 
-export default TopNewList;
+export default RecentList;

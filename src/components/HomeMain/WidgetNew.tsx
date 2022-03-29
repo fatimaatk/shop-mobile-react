@@ -39,15 +39,18 @@ const WidgetNew: React.FC<{ product: ProductsType }> = (props) => {
           <h2 className="text-dark text-capitalize">{product.name}</h2>
         </Link>
         <div className="product-wid-rating">
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
-          <FontAwesomeIcon icon={faStar} />
+          {Array.from({ length: product.review }, (_, i) => (
+            <FontAwesomeIcon icon={faStar} key={i} />
+          ))}
+          {props.product.review < 5
+            ? Array.from({ length: 5 - product.review }, (_, i) => (
+                <FontAwesomeIcon icon={faStar} key={i} color={"#e3e3e3"} />
+              ))
+            : null}
         </div>
         <div className="product-wid-price">
-          <ins>${product.price.toFixed(2)}</ins>
-          <del>${priceNoDiscount.toFixed(2)}</del>
+          <ins>{product.price.toFixed(2)} €</ins>
+          <del>${priceNoDiscount.toFixed(2)} €</del>
         </div>
       </div>
     </>

@@ -13,6 +13,7 @@ import Checkout from "./components/Checkout/Checkout";
 import Footer from "./components/Footer/Footer";
 
 import "./App.css";
+import RecentList from "./components/ProductsList/RecentList";
 
 const App: React.FC<React.ReactNode> = () => {
   return (
@@ -30,6 +31,7 @@ const App: React.FC<React.ReactNode> = () => {
             path="/products/top-sellers"
             element={<TopSellersList />}
           ></Route>
+          <Route path="/products/recents" element={<RecentList />}></Route>
           <Route path="/product/:id" element={<ProductDetails />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/checkout" element={<Checkout />}></Route>

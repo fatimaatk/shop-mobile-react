@@ -57,13 +57,15 @@ const TopSellersList = () => {
       </div>
       <div className="row">
         <div className="col-md-12">
-          <Pagination
-            productPerPage={productPerPage}
-            totalProducts={products.length}
-            currentPage={currentPage}
-            paginate={paginate}
-            setCurrentPage={setCurrentPage}
-          />
+          {currentPage > 1 && (
+            <Pagination
+              productPerPage={productPerPage}
+              totalProducts={products.length}
+              currentPage={currentPage}
+              paginate={paginate}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </div>
       </div>
     </div>

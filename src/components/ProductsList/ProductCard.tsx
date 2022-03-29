@@ -1,11 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./../../css/style.css";
 
 import { useAppSelector, useAppDispatch } from "../../store/hook";
 
+import Cookies from "js-cookie";
+
 import ProductsType from "../../model/productType";
-import { addItemToCart, removeItemToCart } from "../../store/CartTotalSlice";
+import { addItemToCart } from "../../store/CartTotalSlice";
 
 const ProductCard: React.FC<{
   product: ProductsType;
@@ -20,14 +23,6 @@ const ProductCard: React.FC<{
   const incrementHandlerQty = () => {
     dispatch(
       addItemToCart({
-        product,
-      })
-    );
-  };
-
-  const decrementHandlerQty = () => {
-    dispatch(
-      removeItemToCart({
         product,
       })
     );
@@ -49,7 +44,9 @@ const ProductCard: React.FC<{
   };
 
   const folderLink = folderTitle(product.name);
-
+  console.log(folderLink);
+  console.log(product.imageName);
+  console.log(product);
   //Calcul prix remisé
   let priceBeforeDiscount: number =
     (product.price * product.discountRate) / 100 + product.price;
@@ -76,8 +73,8 @@ const ProductCard: React.FC<{
           </Link>
 
           <div className="product-carousel-price">
-            <ins>${product.price}</ins>{" "}
-            <del>${priceBeforeDiscount.toFixed(2)}</del>
+            <ins>{product.price.toFixed(2)} €</ins>{" "}
+            <del>{priceBeforeDiscount.toFixed(2)} €</del>
           </div>
 
           <div className="product-option-shop">
@@ -87,12 +84,6 @@ const ProductCard: React.FC<{
             >
               Add to cart
             </button>
-            {/* <button
-              className="add_to_cart_button"
-              onClick={decrementHandlerQty}
-            >
-              Remove to cart
-            </button> */}
           </div>
         </div>
       </div>
