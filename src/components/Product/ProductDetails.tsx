@@ -197,7 +197,8 @@ const ProductDetails: React.FC = () => {
                       <div className="product-inner">
                         <h2 className="product-name text-capitalize">{name}</h2>
                         <div className="product-inner-price">
-                          <ins>{price}€</ins> <del>{discountAmount}€</del>
+                          <ins>{price.toFixed(2)}€</ins>{" "}
+                          <del>{discountAmount.toFixed(2)}€</del>
                         </div>
                         <form>
                           <div className="quantity">

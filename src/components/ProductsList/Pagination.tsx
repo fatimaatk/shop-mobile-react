@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Pagination: React.FC<{
   productPerPage: number;
-  totalProducts: number;
+  totalProducts: number | any;
   paginate: Function;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
@@ -23,8 +23,8 @@ const Pagination: React.FC<{
   }
 
   const prevPage = (pageNumber: number) => {
-    if (pageNumber > totalPage.length) {
-      setCurrentPage(pageNumber + 1);
+    if (pageNumber > 1) {
+      setCurrentPage(pageNumber - 1);
     }
   };
 
@@ -33,6 +33,7 @@ const Pagination: React.FC<{
       setCurrentPage(pageNumber + 1);
     }
   };
+
   return (
     <nav aria-label="Page navigation example">
       <ul className="pagination justify-content-center">

@@ -1,37 +1,25 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProductCard from "./ProductCard";
-import ProductsType from "../../model/productType";
 import Pagination from "./Pagination";
 import { useCookies } from "react-cookie";
+import CookiesType from "../../model/cookiesType";
+import ProductsType from "../../model/productType";
 
 const RecentList = () => {
-  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productPerPage] = useState(12);
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const [cookies] = useCookies(["products"]);
   const myCookies = Object.values(cookies);
 
-  console.log(cookies);
-
-  const getData = async () => {
-    const response = await fetch(`http://localhost:3000/top-sellers-products`);
-    const data = await response.json();
-    setProducts(data);
-  };
-
   //Méthode pagination
   const indexOfLastProduct = currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  const currentProducts: ProductsType[] = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+
+  const currentProducts = cookies.products
+    .filter((value: any) => Object.keys(value).length !== 0)
+    .slice(indexOfFirstProduct, indexOfLastProduct);
 
   //change page
   const paginate = (pageNumber: number) => {
@@ -55,29 +43,22 @@ const RecentList = () => {
         <div className="zigzag-bottom "></div>
         <div className="container ">
           <div className="row ">
-            {myCookies &&
-              myCookies.map((cookies) =>
-                cookies
-                  .filter((value: any) => Object.keys(value).length !== 0)
-
-                  .map((product: any, items: any) => (
-                    <ProductCard product={product} key={items} />
-                  ))
-              )}
+            {currentProducts &&
+              currentProducts.map((product: any, i: number) => (
+                <ProductCard product={product} key={i} />
+              ))}
           </div>
         </div>
       </div>
       <div className="row">
         <div className="col-md-12">
-          {currentPage > 1 && (
-            <Pagination
-              productPerPage={productPerPage}
-              totalProducts={products.length}
-              currentPage={currentPage}
-              paginate={paginate}
-              setCurrentPage={setCurrentPage}
-            />
-          )}
+          <Pagination
+            productPerPage={productPerPage}
+            totalProducts={cookies.products.length}
+            currentPage={currentPage}
+            paginate={paginate}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
       </div>
     </div>
