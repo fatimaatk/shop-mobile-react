@@ -39,8 +39,6 @@ const ProductsList: React.FC = () => {
     setCurrentPage(pageNumber);
   };
 
-  console.log(productsBrand);
-
   return (
     <div>
       <div className="product-big-title-area">

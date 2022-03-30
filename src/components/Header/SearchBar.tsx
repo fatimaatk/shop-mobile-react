@@ -72,6 +72,7 @@ const SearchBar = () => {
           {filteredData.slice(0, 5).map((value, i) => {
             return (
               <Link
+                key={i}
                 to={`/product/${value.id}`}
                 className="text-decoration-none"
                 target={"_blank"}
@@ -79,10 +80,7 @@ const SearchBar = () => {
                   clearInput();
                 }}
               >
-                <div
-                  key={i}
-                  className="text-capitalize list-group-item list-group-item-action d-flex justify-content-between"
-                >
+                <div className="text-capitalize list-group-item list-group-item-action d-flex justify-content-between">
                   <img
                     src={`/images/${folderTitle(value.name)}/${
                       value.imageName

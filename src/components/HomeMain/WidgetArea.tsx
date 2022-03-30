@@ -30,7 +30,6 @@ const WidgetArea = () => {
   const [cookies] = useCookies(["products"]);
   const myCookies = Object.values(cookies);
 
-  console.log(myCookies);
   return (
     <div className="product-widget-area">
       <div className="zigzag-bottom"></div>
