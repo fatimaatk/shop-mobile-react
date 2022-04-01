@@ -3,10 +3,18 @@ import { Link } from "react-router-dom";
 
 import { ItemType } from "../../store/CartTotalSlice";
 
+import { useAppSelector, useAppDispatch } from "../../store/hook";
+import {
+  addItemToCart,
+  removeItemToCart,
+  removeItem,
+} from "../../store/CartTotalSlice";
+
 const CartProduct: React.FC<{
   product: ItemType;
+  qty: number;
 }> = (props) => {
-  const { product } = props;
+  const { product, qty } = props;
 
   //méthode recherche image
   const folderTitle = (name: string) => {
@@ -26,17 +34,47 @@ const CartProduct: React.FC<{
   const folderLink = folderTitle(product.name);
 
   const price = product.price.toFixed(2);
+  const pricePerQty = product.price * qty;
 
+  const cartItem = useAppSelector((state) => state.cartItem);
+  const dispatch = useAppDispatch();
+
+  const incrementHandlerQty = () => {
+    dispatch(
+      addItemToCart({
+        product,
+      })
+    );
+  };
+
+  const removeHandlerProduct = () => {
+    dispatch(
+      removeItemToCart({
+        product,
+      })
+    );
+  };
+
+  const removeHandlerItem = () => {
+    dispatch(
+      removeItem({
+        product,
+      })
+    );
+  };
+
+  const inputChangeHandler = (e: any) => {
+    const updateValue = e.target.value;
+  };
   return (
     <tr className="cart_item">
       <td className="product-remove">
-        <Link
-          title="Remove this item"
+        <button
+          onClick={removeHandlerItem}
           className="remove text-decoration-none"
-          to=""
         >
           x
-        </Link>
+        </button>
       </td>
 
       <td className="product-thumbnail">
@@ -66,21 +104,37 @@ const CartProduct: React.FC<{
 
       <td className="product-quantity">
         <div className="quantity buttons_added">
-          <input type="button" className="minus" defaultValue="-" />
+          {qty > 0 ? (
+            <input
+              type="button"
+              className="minus"
+              defaultValue="-"
+              onClick={removeHandlerProduct}
+            />
+          ) : (
+            <input type="button" className="minus" defaultValue="-" />
+          )}
+
           <input
             type="number"
             className="input-text qty text"
             title="Qty"
-            defaultValue="1"
             min="0"
             step="1"
+            value={qty}
+            onChange={(e) => inputChangeHandler(e)}
           />
-          <input type="button" className="plus" defaultValue="+" />
+          <input
+            type="button"
+            className="plus"
+            defaultValue="+"
+            onClick={incrementHandlerQty}
+          />
         </div>
       </td>
 
       <td className="product-subtotal">
-        <span className="amount">{price} €</span>
+        <span className="amount">{pricePerQty} €</span>
       </td>
     </tr>
   );

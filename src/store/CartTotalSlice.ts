@@ -11,6 +11,7 @@ export interface ItemType {
   name: string;
   imageName: string;
   product?: any;
+  exist: any;
 }
 
 // Define a type for the slice state
@@ -34,22 +35,58 @@ export const cartSliceTotal = createSlice({
   reducers: {
     addItemToCart(state, action) {
       let newItem = action.payload;
+      const exist = state.items.findIndex(
+        (x) => x.product.id === newItem.product.id
+      );
 
-      state.totalqty++;
-      state.items.push(newItem);
-      state.totalAmount += newItem.product.price;
+      if (exist >= 0) {
+        state.items[exist] = {
+          ...state.items[exist],
+          qty: state.items[exist].qty + 1,
+        };
+        state.totalqty++;
+        state.totalAmount += newItem.product.price;
+      } else {
+        state.items.push({ ...newItem, qty: 1 });
+        state.totalqty++;
+        state.totalAmount += newItem.product.price;
+      }
     },
     removeItemToCart(state, action) {
-      const item = action.payload;
-      const id = action.payload;
-      state.totalqty--;
-      state.items.filter((item) => item.id !== item.id);
-      state.totalAmount -= item.product.price;
+      const exist = state.items.findIndex(
+        (x) => x.product.id === action.payload.product.id
+      );
+      if (state.items[exist].qty === 1) {
+        state.items.splice(exist, 1);
+        state.totalqty--;
+        state.totalAmount -= action.payload.product.price;
+      } else {
+        state.items[exist] = {
+          ...state.items[exist],
+          qty: state.items[exist].qty - 1,
+        };
+        state.totalqty--;
+        state.totalAmount -= action.payload.product.price;
+      }
+    },
+    removeItem(state, action) {
+      const exist = state.items.findIndex(
+        (x) => x.product.id === action.payload.product.id
+      );
+
+      const qty = state.items.map((x) => x.qty);
+
+      if (exist >= 0) {
+        state.items.splice(exist, 1);
+        state.totalqty -= qty[exist];
+        state.totalAmount -= action.payload.product.price * qty[exist];
+      }
     },
   },
 });
 
-export const { addItemToCart, removeItemToCart } = cartSliceTotal.actions;
+export const { addItemToCart, removeItemToCart, removeItem } =
+  cartSliceTotal.actions;
 
 export const cartItems = (state: RootState) => state.cartItem;
 

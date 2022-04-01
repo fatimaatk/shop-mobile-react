@@ -1,31 +1,27 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProductCard from "./ProductCard";
-import ProductsType from "../../model/productType";
 import Pagination from "./Pagination";
+import { useCookies } from "react-cookie";
+import CookiesType from "../../model/cookiesType";
+import ProductsType from "../../model/productType";
 
-const TopNewList = () => {
-  const [products, setProducts] = useState([]);
+const RecentList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productPerPage] = useState(12);
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const response = await fetch(`http://localhost:3000/top-new-products`);
-    const data = await response.json();
-    setProducts(data);
-  };
+  const [cookies] = useCookies(["products"]);
+  const myCookies = cookies.products && Object.values(cookies.products);
 
   //Méthode pagination
   const indexOfLastProduct = currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  const currentProducts: ProductsType[] = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+
+  const currentProducts =
+    cookies.products &&
+    cookies.products
+      .filter((value: any) => Object.keys(value).length !== 0)
+      .slice(indexOfFirstProduct, indexOfLastProduct);
 
   //change page
   const paginate = (pageNumber: number) => {
@@ -39,7 +35,7 @@ const TopNewList = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="product-bit-title text-center">
-                <h2 className="text-capitalize">Top New Products</h2>
+                <h2 className="text-capitalize">Recently Viewed</h2>
               </div>
             </div>
           </div>
@@ -49,27 +45,29 @@ const TopNewList = () => {
         <div className="zigzag-bottom "></div>
         <div className="container ">
           <div className="row ">
-            {currentProducts.map((product, i) => (
-              <ProductCard product={product} key={i} />
-            ))}
+            {currentProducts
+              ? currentProducts.map((product: any, i: number) => (
+                  <ProductCard product={product} key={i} />
+                ))
+              : null}
           </div>
         </div>
       </div>
       <div className="row">
         <div className="col-md-12">
-          {currentPage > 1 && (
+          {cookies.products ? (
             <Pagination
               productPerPage={productPerPage}
-              totalProducts={products.length}
+              totalProducts={cookies.products.length}
               currentPage={currentPage}
               paginate={paginate}
               setCurrentPage={setCurrentPage}
             />
-          )}
+          ) : null}
         </div>
       </div>
     </div>
   );
 };
 
-export default TopNewList;
+export default RecentList;

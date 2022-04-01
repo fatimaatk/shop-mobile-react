@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Cookies, useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import WidgetNew from "./WidgetNew";
 import WidgetsRecents from "./WidgetsRecents";
@@ -26,6 +27,8 @@ const WidgetArea = () => {
     setNewProducts(data);
   };
 
+  const [cookies] = useCookies(["products"]);
+  const myCookies = cookies.products && Object.values(cookies.products);
   return (
     <div className="product-widget-area">
       <div className="zigzag-bottom"></div>
@@ -45,12 +48,20 @@ const WidgetArea = () => {
           <div className="col-md-4">
             <div className="single-product-widget">
               <h2 className="product-wid-title">Recently Viewed</h2>
-              <Link to={`/products`} className="wid-view-more">
+
+              <Link to={`/products/recents`} className="wid-view-more">
                 View All
               </Link>
-              <WidgetsRecents />
+              {myCookies &&
+                myCookies
+                  .filter((value: any) => Object.keys(value).length !== 0)
+                  .splice(-3)
+                  .map((cookie: any, items: any) => (
+                    <WidgetsRecents cookie={cookie} key={items} />
+                  ))}
             </div>
           </div>
+
           <div className="col-md-4">
             <div className="single-product-widget">
               <h2 className="product-wid-title">Top New</h2>

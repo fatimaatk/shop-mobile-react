@@ -49,7 +49,7 @@ const ProductCardInCart: React.FC<{ product: ProductsType }> = (props) => {
           />
           <h3 className="text-capitalize ">{product.name}</h3>
           <span className="price">
-            <span className="amount">20.00 €</span>
+            <span className="amount">{product.price.toFixed(2)} €</span>
           </span>
         </Link>
 

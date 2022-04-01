@@ -1,18 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { BrandCategories } from "./BrandCategories";
+import { useSelector } from "react-redux";
+
+import { RootState } from "../../store/store";
 
 const Footer = () => {
-  const [brands, setBrands] = useState([]);
-
-  useEffect(() => {
-    getBrand();
-  }, []);
-  const getBrand = async () => {
-    const response = await fetch(`http://localhost:3000/categories`);
-    const data = await response.json();
-    setBrands(data);
-  };
+  const { categories } = useSelector((state: RootState) => state.categories);
 
   return (
     <div>
@@ -39,7 +31,7 @@ const Footer = () => {
               <div className="footer-menu">
                 <h2 className="footer-wid-title">Categories </h2>
                 <ul>
-                  {brands.map((brand, i) => (
+                  {categories.map((brand: any, i: number) => (
                     <BrandCategories key={i} brand={brand} />
                   ))}
                 </ul>

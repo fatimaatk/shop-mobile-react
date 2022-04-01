@@ -1,20 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
+import ProductsType from "../../model/productType";
 
 import { useAppSelector } from "../../store/hook";
 
 import CartProduct from "./CartProduct";
 import CartTotal from "./CartTotal";
-import ProductInterested from "./ProductInterested";
+import ProductCardInCart from "./ProductCardInCart";
 
 const Cart: React.FC = () => {
-  const styles: React.CSSProperties = {};
+  //redux cart
   const cartItem = useAppSelector((state) => state.cartItem);
+  const items = cartItem.items;
 
+  //price
   const totalOrder: number = (cartItem.totalAmount * 120) / 100;
   const subTotalOrder: number = cartItem.totalAmount;
+  const tax: number = totalOrder - subTotalOrder;
 
-  const items = cartItem.items;
+  //random
+  const [randomProducts, setRandomProducts] = useState<ProductsType[]>([]);
+
+  //produits dans cart
+  const [cartId, setCartId] = useState();
+  const productsInCart: ProductsType[] = items.map((x) => x.product);
+  const qtyPerProducts = items.map((x) => x.qty);
+
+  useEffect(() => {
+    getData();
+    getIdFromCart();
+
+    // fetch("http://localhost:3000/carts", {
+    //   method: "PUT",
+    //   body: JSON.stringify({ ...cartItem }),
+    // });
+  }, []);
+
+  const getIdFromCart = async () => {
+    const response = await fetch(`http://localhost:3000/carts`);
+    const data = await response.json();
+    setCartId(data.map((x: any) => x.id));
+  };
+
+  console.log(cartId);
+
+  const getData = async () => {
+    const response = await fetch(`http://localhost:3000/products`);
+    const data = await response.json();
+    let randomProduct1: ProductsType = await data[
+      Math.floor(Math.random() * data.length)
+    ];
+    let randomProduct2: ProductsType = await data[
+      Math.floor(Math.random() * data.length)
+    ];
+    setRandomProducts([randomProduct1, randomProduct2]);
+  };
 
   return (
     <div className="single-product-area">
@@ -38,7 +79,11 @@ const Cart: React.FC = () => {
                     </thead>
                     <tbody>
                       {items.map((item, i) => (
-                        <CartProduct product={item.product} key={i} />
+                        <CartProduct
+                          product={item.product}
+                          qty={item.qty}
+                          key={i}
+                        />
                       ))}
 
                       <tr>
@@ -56,16 +101,21 @@ const Cart: React.FC = () => {
                     </tbody>
                   </table>
                 ) : (
-                  <div style={styles}>
-                    <div className="mb-5">
-                      <h2 style={{ color: "#5a88ca" }}>
-                        YOUR CART IS EMPTY ...
-                      </h2>
-                    </div>
+                  <div className="mb-5">
+                    <h2 style={{ color: "#5a88ca" }}>YOUR CART IS EMPTY ...</h2>
                   </div>
                 )}
                 <div className="cart-collaterals">
-                  <ProductInterested />
+                  <div className="cross-sells">
+                    <h2>You may be interested in...</h2>
+                    <ul className="products">
+                      {randomProducts &&
+                        randomProducts.map((product, i) => (
+                          <ProductCardInCart product={product} key={i} />
+                        ))}
+                    </ul>
+                  </div>
+
                   {items.length > 0 ? (
                     <CartTotal
                       totalOrder={totalOrder}

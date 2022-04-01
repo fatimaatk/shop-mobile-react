@@ -1,35 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/store";
 
 import ProductsType from "../../model/productType";
+import ProductCard from "../ProductsList/ProductCard";
+import Pagination from "../ProductsList/Pagination";
+import getProducts from "../../store/ProductsSlice";
 
-import ProductCard from "./ProductCard";
-import Pagination from "./Pagination";
-import "./../../css/style.css";
+const ProductsListSearch = () => {
+  const dispatch = useDispatch();
+  const { result }: any = useParams();
+  const { products } = useSelector((state: RootState) => state.products);
 
-const ProductsList: React.FC = () => {
-  const [productsBrand, setProductsBrand] = useState([]);
-  const [brandName, setBrandName] = useState("");
+  useEffect(() => {
+    products.length === 0 && dispatch(getProducts());
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [productPerPage] = useState(12);
-  const { id } = useParams();
 
-  useEffect(() => {
-    getData();
-  }, [id]);
-
-  const getData = async () => {
-    const response = await fetch(`http://localhost:3000/products-lists/${id}`);
-    const data = await response.json();
-    setProductsBrand(data.items);
-    setBrandName(data.name);
-  };
+  const filteredData: ProductsType[] = products.filter((value) => {
+    return value.name.toLowerCase().includes(result.toLowerCase());
+  });
 
   //Méthode pagination
   const indexOfLastProduct = currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  const currentProducts: ProductsType[] = productsBrand.slice(
+  const currentProducts: ProductsType[] = filteredData.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -39,6 +38,8 @@ const ProductsList: React.FC = () => {
     setCurrentPage(pageNumber);
   };
 
+  console.log(products);
+
   return (
     <div>
       <div className="product-big-title-area">
@@ -46,18 +47,19 @@ const ProductsList: React.FC = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="product-bit-title text-center">
-                <h2 className="text-capitalize">{brandName}</h2>
+                <h2 className="text-capitalize">Your research : {result}</h2>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div className="single-product-area ">
         <div className="zigzag-bottom "></div>
         <div className="container ">
           <div className="row ">
             {currentProducts.map((product, i) => (
-              <ProductCard product={product} key={i} brandName={brandName} />
+              <ProductCard product={product} key={i} />
             ))}
           </div>
         </div>
@@ -66,7 +68,7 @@ const ProductsList: React.FC = () => {
         <div className="col-md-12">
           <Pagination
             productPerPage={productPerPage}
-            totalProducts={productsBrand.length}
+            totalProducts={filteredData.length}
             currentPage={currentPage}
             paginate={paginate}
             setCurrentPage={setCurrentPage}
@@ -77,4 +79,4 @@ const ProductsList: React.FC = () => {
   );
 };
 
-export default ProductsList;
+export default ProductsListSearch;

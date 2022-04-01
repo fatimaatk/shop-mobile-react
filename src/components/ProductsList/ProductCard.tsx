@@ -5,7 +5,7 @@ import "./../../css/style.css";
 import { useAppSelector, useAppDispatch } from "../../store/hook";
 
 import ProductsType from "../../model/productType";
-import { addItemToCart, removeItemToCart } from "../../store/CartTotalSlice";
+import { addItemToCart } from "../../store/CartTotalSlice";
 
 const ProductCard: React.FC<{
   product: ProductsType;
@@ -25,15 +25,6 @@ const ProductCard: React.FC<{
     );
   };
 
-  const decrementHandlerQty = () => {
-    dispatch(
-      removeItemToCart({
-        product,
-      })
-    );
-  };
-
-  //méthode recherche image
   const folderTitle = (name: string) => {
     if (name.includes("apple")) {
       return "products-img/Apple";
@@ -76,8 +67,8 @@ const ProductCard: React.FC<{
           </Link>
 
           <div className="product-carousel-price">
-            <ins>${product.price}</ins>{" "}
-            <del>${priceBeforeDiscount.toFixed(2)}</del>
+            {/* <ins>{product.price.toFixed(2)} €</ins>{" "}
+            <del>{priceBeforeDiscount.toFixed(2)} €</del> */}
           </div>
 
           <div className="product-option-shop">
@@ -87,12 +78,6 @@ const ProductCard: React.FC<{
             >
               Add to cart
             </button>
-            {/* <button
-              className="add_to_cart_button"
-              onClick={decrementHandlerQty}
-            >
-              Remove to cart
-            </button> */}
           </div>
         </div>
       </div>
