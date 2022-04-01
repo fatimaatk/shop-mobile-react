@@ -1,21 +1,19 @@
 import React from "react";
 import "./../../css/style.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import MenuCategories from "./MenuCategories";
+import { useDispatch, useSelector } from "react-redux";
+import getCategories from "../../store/CategoriesSlice";
+import { RootState } from "../../store/store";
 
 const NavBar = () => {
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state: RootState) => state.categories);
 
   useEffect(() => {
-    getCategories();
+    categories.length === 0 && dispatch(getCategories());
   }, []);
-
-  const getCategories = async () => {
-    const response = await fetch(`http://localhost:3000/categories`);
-    const data = await response.json();
-    setCategories(data);
-  };
 
   return (
     <div className="mainmenu-area">
@@ -26,7 +24,7 @@ const NavBar = () => {
               <li className="active">
                 <Link to={`/`}>Home</Link>
               </li>
-              {categories.map((category, i) => (
+              {categories.map((category: any, i: number) => (
                 <MenuCategories category={category} key={i} />
               ))}
             </ul>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProductsType from "../../model/productType";
 
@@ -13,13 +13,26 @@ const Cart: React.FC = () => {
 
   const totalOrder: number = (cartItem.totalAmount * 120) / 100;
   const subTotalOrder: number = cartItem.totalAmount;
+  const tax: number = totalOrder - subTotalOrder;
 
   const items = cartItem.items;
+  //produits dans cart
+  const productsInCart: ProductsType[] = items.map((x) => x.product);
+
+  const qtyPerProducts = items.map((x) => x.qty);
 
   const [randomProducts, setRandomProducts] = useState<ProductsType[]>([]);
 
   useEffect(() => {
     getData();
+    // fetch("http://localhost:3000/carts", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     total: totalOrder,
+    //     subTotalOrder: subTotalOrder,
+    //     tax: tax,
+    //   }),
+    // });
   }, []);
 
   const getData = async () => {

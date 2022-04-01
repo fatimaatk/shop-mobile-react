@@ -28,8 +28,7 @@ const WidgetArea = () => {
   };
 
   const [cookies] = useCookies(["products"]);
-  const myCookies = Object.values(cookies);
-
+  const myCookies = Object.values(cookies.products);
   return (
     <div className="product-widget-area">
       <div className="zigzag-bottom"></div>
@@ -54,14 +53,12 @@ const WidgetArea = () => {
                 View All
               </Link>
               {myCookies &&
-                myCookies.map((cookies) =>
-                  cookies
-                    .filter((value: any) => Object.keys(value).length !== 0)
-                    .splice(-3)
-                    .map((cookie: any, items: any) => (
-                      <WidgetsRecents cookie={cookie} key={items} />
-                    ))
-                )}
+                myCookies
+                  .filter((value: any) => Object.keys(value).length !== 0)
+                  .splice(-3)
+                  .map((cookie: any, items: any) => (
+                    <WidgetsRecents cookie={cookie} key={items} />
+                  ))}
             </div>
           </div>
 

@@ -7,6 +7,9 @@ import CookiesType from "../../model/cookiesType";
 
 import { useAppSelector, useAppDispatch } from "../../store/hook";
 import { addItemToCart } from "../../store/CartTotalSlice";
+import { RootState } from "../../store/store";
+
+import { useSelector } from "react-redux";
 
 import { useCookies } from "react-cookie";
 
@@ -22,6 +25,8 @@ import OtherBrands from "./otherBrands";
 import Recent from "../Recents/Recent";
 
 const ProductDetails: React.FC = () => {
+  const { categories } = useSelector((state: RootState) => state.categories);
+
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
@@ -30,7 +35,6 @@ const ProductDetails: React.FC = () => {
   const [price, setPrice] = useState<ProductsType["price"]>(0);
   const [discountRate, setDiscountRate] = useState<number>(0);
   const [description, setDescription] = useState("");
-  const [brand, setBrand] = useState<ProductsType[]>([]);
 
   const [cookies, setCookies] = useCookies(["products"]);
 
@@ -52,9 +56,8 @@ const ProductDetails: React.FC = () => {
 
   useEffect(() => {
     getData();
-    getCategories();
     setProductCookies(product);
-  }, [product.id]);
+  }, []);
 
   const getData = async () => {
     setLoading(true);
@@ -66,14 +69,6 @@ const ProductDetails: React.FC = () => {
     setPrice(data.price);
     setDescription(data.description);
     setDiscountRate(data.discountRate);
-    setLoading(false);
-  };
-
-  const getCategories = async () => {
-    setLoading(true);
-    const response = await fetch(`http://localhost:3000/categories`);
-    const data = await response.json();
-    setBrand(data);
     setLoading(false);
   };
 
@@ -112,7 +107,7 @@ const ProductDetails: React.FC = () => {
     }
   };
 
-  const myCookies = Object.values(cookies);
+  const myCookies = Object.values(cookies.products);
 
   let discountAmount: number = (price * discountRate) / 100;
   const imageLink = folderTitle(name) + image;
@@ -133,23 +128,21 @@ const ProductDetails: React.FC = () => {
                     <h2 className="sidebar-title">Recently Viewed</h2>
                   )}
                   {myCookies &&
-                    myCookies.map((cookies) =>
-                      cookies
-                        .filter((value: any) => Object.keys(value).length !== 0)
-                        .splice(-3)
-                        .map((cookie: any, items: any) => (
-                          <Recent cookie={cookie} key={items} />
-                        ))
-                    )}
+                    myCookies
+                      .filter((value: any) => Object.keys(value).length !== 0)
+                      .splice(-3)
+                      .map((cookie: any, items: any) => (
+                        <Recent cookie={cookie} key={items} />
+                      ))}
                 </div>
 
                 <div className="single-sidebar">
                   <h2 className="sidebar-title">Others brands</h2>
                   <ul>
-                    {brand
-                      .filter((x) => x.name !== categoryName)
+                    {categories
+                      .filter((x: any) => x.name !== categoryName)
                       .splice(0, 3)
-                      .map((brand, i) => (
+                      .map((brand: any, i: number) => (
                         <OtherBrands
                           key={i}
                           brand={brand}

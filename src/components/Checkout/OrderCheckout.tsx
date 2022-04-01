@@ -3,7 +3,6 @@ import { useAppSelector } from "../../store/hook";
 
 const OrderCheckout = () => {
   const cartItem = useAppSelector((state) => state.cartItem);
-  console.log(cartItem.items);
 
   const totalOrder: number = (cartItem.totalAmount * 120) / 100;
   return (

@@ -1,16 +1,26 @@
-import React from "react";
-import { Form, Field, useField } from "react-final-form";
+import React, { useState } from "react";
+import { Form, Field } from "react-final-form";
+import { Link } from "react-router-dom";
 import OrderCheckout from "./OrderCheckout";
 
 const Checkout = () => {
-  const required = (value: string | number) =>
+  const [differentAdress, setDifferentAdress] = useState(false);
+
+  const [order, setOrder] = useState("");
+
+  const handleSelectDifferentAdress = () => {
+    setDifferentAdress(!differentAdress);
+  };
+
+  const handleSelectOrder = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOrder(e.target.value);
+  };
+
+  const required = (value: string) =>
     value ? undefined : "This field is required.";
 
   const mustBeNumber = (value: any) =>
     isNaN(value) ? "Must be a number" : undefined;
-
-  const mustBeText = (value: any) =>
-    String(value) ? "Must be a text" : undefined;
 
   const minLength = (min: any) => (value: any) =>
     isNaN(value) || value.length >= min
@@ -54,6 +64,9 @@ const Checkout = () => {
               <div className="product-content-right">
                 <div className="woocommerce">
                   <Form
+                    initialValues={{
+                      ship_to_different_address: false,
+                    }}
                     onSubmit={(ObjForm) => {
                       console.log(ObjForm);
                     }}
@@ -97,9 +110,9 @@ const Checkout = () => {
                                       id="shipping_country"
                                       {...input}
                                     >
-                                      <option defaultValue="AX">Mr</option>
-                                      <option defaultValue="AF">Mlle</option>
-                                      <option defaultValue="AF">Mme</option>
+                                      <option>Mr</option>
+                                      <option>Mlle</option>
+                                      <option>Mme</option>
                                     </select>
                                     {meta.error && meta.touched && (
                                       <span className="text-danger">
@@ -134,7 +147,6 @@ const Checkout = () => {
                                       </label>
                                       <input
                                         type="text"
-                                        defaultValue=""
                                         placeholder=""
                                         id="billing_first_name"
                                         className="input-text "
@@ -174,7 +186,6 @@ const Checkout = () => {
                                       </label>
                                       <input
                                         type="text"
-                                        defaultValue=""
                                         placeholder=""
                                         id="billing_last_name"
                                         className="input-text "
@@ -204,7 +215,6 @@ const Checkout = () => {
 
                                     <input
                                       type="text"
-                                      defaultValue=""
                                       placeholder=""
                                       id="billing_company"
                                       className="input-text "
@@ -238,7 +248,6 @@ const Checkout = () => {
                                       </label>
                                       <input
                                         type="text"
-                                        defaultValue=""
                                         placeholder="Street address"
                                         id="billing_address_1"
                                         className="input-text "
@@ -261,7 +270,6 @@ const Checkout = () => {
                                   >
                                     <input
                                       type="text"
-                                      defaultValue=""
                                       placeholder="Apartment, suite, unit etc. (optional)"
                                       id="billing_address_2"
                                       className="input-text "
@@ -272,10 +280,7 @@ const Checkout = () => {
                               </Field>
                               <Field
                                 name="billing_city"
-                                validate={composeValidators(
-                                  required,
-                                  mustBeText
-                                )}
+                                validate={required}
                                 component="input"
                               >
                                 {({ input, meta }) => (
@@ -295,7 +300,6 @@ const Checkout = () => {
                                     </label>
                                     <input
                                       type="text"
-                                      defaultValue=""
                                       placeholder="Town / City"
                                       id="billing_city"
                                       className="input-text "
@@ -323,7 +327,6 @@ const Checkout = () => {
                                       type="text"
                                       id="billing_state"
                                       placeholder="State / Country"
-                                      defaultValue=""
                                       className="input-text "
                                       {...input}
                                     />
@@ -360,7 +363,6 @@ const Checkout = () => {
                                     </label>
                                     <input
                                       type="text"
-                                      defaultValue=""
                                       placeholder="Postcode / Zip"
                                       id="billing_postcode"
                                       className="input-text "
@@ -399,7 +401,6 @@ const Checkout = () => {
                                     </label>
                                     <input
                                       type="text"
-                                      defaultValue=""
                                       placeholder=""
                                       id="billing_email"
                                       className="input-text "
@@ -438,7 +439,6 @@ const Checkout = () => {
                                     </label>
                                     <input
                                       type="text"
-                                      defaultValue=""
                                       placeholder=""
                                       id="billing_phone"
                                       className="input-text "
@@ -458,35 +458,463 @@ const Checkout = () => {
 
                           <div className="col-6">
                             <div className="woocommerce-shipping-fields">
-                              <Field
-                                component="input"
-                                name="ship_to_different_address"
-                              >
+                              <h3 id="ship-to-different-address">
+                                <label
+                                  className="checkbox"
+                                  htmlFor="ship-to-different-address-checkbox"
+                                >
+                                  Ship to a different address?
+                                </label>
+                                <Field
+                                  component="input"
+                                  name="ship_to_different_address"
+                                  type="checkbox"
+                                  onClick={handleSelectDifferentAdress}
+                                  id="ship-to-different-address-checkbox"
+                                />
+                              </h3>
+                              {differentAdress && (
+                                <div
+                                  className="shipping_address"
+                                  style={{ display: "block" }}
+                                >
+                                  <Field
+                                    name="shipping_country"
+                                    component="select"
+                                  >
+                                    {({ input, meta }) => (
+                                      <p
+                                        id="shipping_country_field"
+                                        className="form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated"
+                                      >
+                                        <label
+                                          className=""
+                                          htmlFor="shipping_country"
+                                        >
+                                          Civility{" "}
+                                          <abbr
+                                            title="required"
+                                            className="required"
+                                          >
+                                            *
+                                          </abbr>
+                                        </label>
+                                        <select
+                                          className="country_to_state country_select"
+                                          id="shipping_country"
+                                          {...input}
+                                        >
+                                          <option value="AX">Mr</option>
+                                          <option value="AF">Mlle</option>
+                                          <option value="AF">Mme</option>
+                                        </select>
+                                        {meta.error && meta.touched && (
+                                          <span className="text-danger">
+                                            {meta.error}
+                                          </span>
+                                        )}
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_first_name"
+                                    component="input"
+                                    validate={required}
+                                  >
+                                    {({ input, meta }) => (
+                                      <p
+                                        id="shipping_first_name_field"
+                                        className="form-row form-row-first validate-required"
+                                      >
+                                        <label
+                                          className=""
+                                          htmlFor="shipping_first_name"
+                                        >
+                                          First Name{" "}
+                                          <abbr
+                                            title="required"
+                                            className="required"
+                                          >
+                                            *
+                                          </abbr>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          placeholder=""
+                                          id="shipping_first_name"
+                                          className="input-text "
+                                          {...input}
+                                        />
+                                        {meta.error && meta.touched && (
+                                          <span className="text-danger">
+                                            {meta.error}
+                                          </span>
+                                        )}
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_last_name_field"
+                                    component="input"
+                                    validate={required}
+                                  >
+                                    {({ input, meta }) => (
+                                      <>
+                                        <p
+                                          id="shipping_last_name_field"
+                                          className="form-row form-row-last validate-required"
+                                        >
+                                          <label
+                                            className=""
+                                            htmlFor="shipping_last_name"
+                                          >
+                                            Last Name{" "}
+                                            <abbr
+                                              title="required"
+                                              className="required"
+                                            >
+                                              *
+                                            </abbr>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            placeholder=""
+                                            id="shipping_last_name"
+                                            className="input-text "
+                                            {...input}
+                                          />
+                                          {meta.error && meta.touched && (
+                                            <span className="text-danger">
+                                              {meta.error}
+                                            </span>
+                                          )}
+                                        </p>
+                                      </>
+                                    )}
+                                  </Field>
+                                  <div className="clear"></div>
+                                  <Field
+                                    name="shipping_company"
+                                    component="input"
+                                  >
+                                    {({ input }) => (
+                                      <p
+                                        id="shipping_company_field"
+                                        className="form-row form-row-wide"
+                                      >
+                                        <label
+                                          className=""
+                                          htmlFor="shipping_company"
+                                        >
+                                          Company Name
+                                        </label>
+
+                                        <input
+                                          type="text"
+                                          placeholder=""
+                                          id="shipping_company"
+                                          className="input-text "
+                                          {...input}
+                                        />
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_address_1"
+                                    component="input"
+                                    validate={required}
+                                  >
+                                    {({ input, meta }) => (
+                                      <>
+                                        <p
+                                          id="shipping_address_1_field"
+                                          className="form-row form-row-wide address-field validate-required"
+                                        >
+                                          <label
+                                            className=""
+                                            htmlFor="shipping_address_1"
+                                          >
+                                            Address  
+                                            <abbr
+                                              title="required"
+                                              className="required"
+                                            >
+                                              *
+                                            </abbr>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            placeholder="Street address"
+                                            id="billing_address_1"
+                                            className="input-text "
+                                            {...input}
+                                          />
+                                          {meta.error && meta.touched && (
+                                            <span className="text-danger">
+                                              {meta.error}
+                                            </span>
+                                          )}
+                                        </p>
+                                      </>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_address_2"
+                                    component="input"
+                                  >
+                                    {({ input }) => (
+                                      <p
+                                        id="shipping_address_2_field"
+                                        className="form-row form-row-wide address-field"
+                                      >
+                                        <input
+                                          type="text"
+                                          placeholder="Apartment, suite, unit etc. (optional)"
+                                          id="billing_address_2"
+                                          className="input-text "
+                                          {...input}
+                                        />
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_city"
+                                    validate={required}
+                                    component="input"
+                                  >
+                                    {({ input, meta }) => (
+                                      <p
+                                        id="shipping_city_field"
+                                        className="form-row form-row-wide address-field validate-required"
+                                        data-o_class="form-row form-row-wide address-field validate-required"
+                                      >
+                                        <label
+                                          className=""
+                                          htmlFor="shipping_city"
+                                        >
+                                          Town / City{" "}
+                                          <abbr
+                                            title="required"
+                                            className="required"
+                                          >
+                                            *{" "}
+                                          </abbr>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          placeholder="Town / City"
+                                          id="shipping_city"
+                                          className="input-text "
+                                          {...input}
+                                        />
+                                        {meta.error && meta.touched && (
+                                          <span className="text-danger">
+                                            {meta.error}
+                                          </span>
+                                        )}
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_state"
+                                    component="input"
+                                  >
+                                    {({ input }) => (
+                                      <p
+                                        id="shipping_state_field"
+                                        className="form-row form-row-first address-field validate-state"
+                                        data-o_class="form-row form-row-first address-field validate-state"
+                                      >
+                                        <label
+                                          className=""
+                                          htmlFor="shipping_state"
+                                        >
+                                          Country
+                                        </label>
+                                        <input
+                                          type="text"
+                                          id="shipping_state_field"
+                                          placeholder="State / Country"
+                                          className="input-text "
+                                          {...input}
+                                        />
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <Field
+                                    name="shipping_postcode"
+                                    validate={composeValidators(
+                                      required,
+                                      mustBeNumber,
+                                      minLength(4)
+                                    )}
+                                    component="input"
+                                  >
+                                    {({ input, meta }) => (
+                                      <p
+                                        id="shipping_postcode_field"
+                                        className="form-row form-row-last address-field validate-required validate-postcode"
+                                        data-o_class="form-row form-row-last address-field validate-required validate-postcode"
+                                      >
+                                        <label
+                                          className=""
+                                          htmlFor="shipping_postcode"
+                                        >
+                                          Postcode{" "}
+                                          <abbr
+                                            title="required"
+                                            className="required"
+                                          >
+                                            {" "}
+                                            * 
+                                          </abbr>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          placeholder="Postcode / Zip"
+                                          id="shipping_postcode"
+                                          className="input-text "
+                                          {...input}
+                                        />
+                                        {meta.error && meta.touched && (
+                                          <span className="text-danger">
+                                            {meta.error}
+                                          </span>
+                                        )}
+                                      </p>
+                                    )}
+                                  </Field>
+                                  <div className="clear"></div>
+                                </div>
+                              )}
+
+                              <Field component="textarea" name="order_comments">
                                 {({ input }) => (
-                                  <h3 id="ship-to-different-address">
+                                  <p
+                                    id="order_comments_field"
+                                    className="form-row notes"
+                                  >
                                     <label
-                                      className="checkbox"
-                                      htmlFor="ship-to-different-address-checkbox"
+                                      className=""
+                                      htmlFor="order_comments"
                                     >
-                                      Ship to a different address?
+                                      Order Notes
                                     </label>
-                                    <input
-                                      type="checkbox"
-                                      className="input-checkbox"
-                                      id="ship-to-different-address-checkbox"
+                                    <textarea
+                                      // cols="5"
+                                      // rows="2"
+                                      placeholder="Notes about your order, e.g. special notes for delivery."
+                                      id="order_comments"
+                                      className="input-text "
                                       {...input}
-                                    />
-                                  </h3>
+                                    ></textarea>
+                                  </p>
                                 )}
                               </Field>
                             </div>
                           </div>
                         </div>
+                        <h3 id="order_review_heading">Your order</h3>
+                        <OrderCheckout />
+
+                        <div id="payment">
+                          <ul className="payment_methods methods">
+                            <li className="payment_method_bacs">
+                              <label htmlFor="payment_method_bacs">
+                                <Field
+                                  component="input"
+                                  name="payment_method_bacs"
+                                  value="payment_method_bacs"
+                                  type="radio"
+                                  id="payment_method_bacs"
+                                  checked={order === "payment_method_bacs"}
+                                  onChange={handleSelectOrder}
+                                  validate={required}
+                                />{" "}
+                                Direct Bank Transfer
+                                {/* {({ meta }) => (
+                                  {meta.error && meta.touched && (
+                                          <span className="text-danger">
+                                            {meta.error}
+                                          </span>
+                                        )}
+                               )} */}
+                              </label>
+
+                              <div className="payment_box payment_method_bacs">
+                                <p>
+                                  Make your payment directly into our bank
+                                  account. Please use your Order ID as the
+                                  payment reference. Your order won’t be shipped
+                                  until the funds have cleared in our account.
+                                </p>
+                              </div>
+                            </li>
+                            <li className="payment_method_cheque">
+                              <label htmlFor="payment_method_cheque">
+                                <Field
+                                  component="input"
+                                  name="payment_method_cheque"
+                                  value="payment_method_cheque"
+                                  type="radio"
+                                  id="payment_method_cheque"
+                                  checked={order === "payment_method_cheque"}
+                                  onChange={handleSelectOrder}
+                                  validate={required}
+                                />{" "}
+                                Cheque Payment{" "}
+                              </label>
+                              {order === "payment_method_cheque" && (
+                                <div className="payment_box payment_method_cheque">
+                                  <p>
+                                    Please send your cheque to Store Name, Store
+                                    Street, Store Town, Store State / County,
+                                    Store Postcode.
+                                  </p>
+                                </div>
+                              )}
+                            </li>
+                            <li className="payment_method_paypal">
+                              <label htmlFor="payment_method_paypal">
+                                <Field
+                                  component="input"
+                                  name="payment_method_paypal"
+                                  value="payment_method_paypal"
+                                  type="radio"
+                                  id="payment_method_paypal"
+                                  checked={order === "payment_method_paypal"}
+                                  onChange={handleSelectOrder}
+                                />{" "}
+                                PayPal{" "}
+                                <img
+                                  alt="PayPal Acceptance Mark"
+                                  src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png"
+                                />
+                                <a
+                                  title="What is PayPal?"
+                                  className="about_paypal"
+                                  href="https://www.paypal.com/gb/webapps/mpp/paypal-popup"
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  What is PayPal?
+                                </a>
+                              </label>
+                              {order === "payment_method_paypal" && (
+                                <div className="payment_box payment_method_paypal">
+                                  <p>
+                                    Pay via PayPal, you can pay with your credit
+                                    card if you don’t have a PayPal account.
+                                  </p>
+                                </div>
+                              )}
+                            </li>
+                          </ul>
+                        </div>
                         <div className="form-row place-order">
                           <input
                             type="submit"
                             data-value="Place order"
-                            defaultValue="Place order"
                             id="place_order"
                             name="woocommerce_checkout_place_order"
                             className="button alt"

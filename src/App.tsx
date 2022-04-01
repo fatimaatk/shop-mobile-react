@@ -8,6 +8,7 @@ import ProductsList from "./components/ProductsList/ProductsList";
 import ProductDetails from "./components/Product/ProductDetails";
 import TopSellersList from "./components/ProductsList/TopSellersList";
 import TopNewList from "./components/ProductsList/TopNewList";
+import ProductsListSearch from "./components/Header/ProductsListSearch";
 import Cart from "./components/Cart/Cart";
 import Checkout from "./components/Checkout/Checkout";
 import Footer from "./components/Footer/Footer";
@@ -32,6 +33,10 @@ const App: React.FC<React.ReactNode> = () => {
             element={<TopSellersList />}
           ></Route>
           <Route path="/products/recents" element={<RecentList />}></Route>
+          <Route
+            path="/search/:result"
+            element={<ProductsListSearch />}
+          ></Route>
           <Route path="/product/:id" element={<ProductDetails />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/checkout" element={<Checkout />}></Route>
