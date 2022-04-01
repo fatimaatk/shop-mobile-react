@@ -52,13 +52,13 @@ const WidgetArea = () => {
               <Link to={`/products/recents`} className="wid-view-more">
                 View All
               </Link>
-              {myCookies &&
+              {/* {myCookies &&
                 myCookies
                   .filter((value: any) => Object.keys(value).length !== 0)
                   .splice(-3)
                   .map((cookie: any, items: any) => (
                     <WidgetsRecents cookie={cookie} key={items} />
-                  ))}
+                  ))} */}
             </div>
           </div>
 

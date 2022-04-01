@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import ProductsType from "../../model/productType";
 
@@ -9,31 +10,40 @@ import CartTotal from "./CartTotal";
 import ProductCardInCart from "./ProductCardInCart";
 
 const Cart: React.FC = () => {
+  //redux cart
   const cartItem = useAppSelector((state) => state.cartItem);
+  const items = cartItem.items;
 
+  //price
   const totalOrder: number = (cartItem.totalAmount * 120) / 100;
   const subTotalOrder: number = cartItem.totalAmount;
   const tax: number = totalOrder - subTotalOrder;
 
-  const items = cartItem.items;
-  //produits dans cart
-  const productsInCart: ProductsType[] = items.map((x) => x.product);
-
-  const qtyPerProducts = items.map((x) => x.qty);
-
+  //random
   const [randomProducts, setRandomProducts] = useState<ProductsType[]>([]);
+
+  //produits dans cart
+  const [cartId, setCartId] = useState();
+  const productsInCart: ProductsType[] = items.map((x) => x.product);
+  const qtyPerProducts = items.map((x) => x.qty);
 
   useEffect(() => {
     getData();
+    getIdFromCart();
+
     // fetch("http://localhost:3000/carts", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     total: totalOrder,
-    //     subTotalOrder: subTotalOrder,
-    //     tax: tax,
-    //   }),
+    //   method: "PUT",
+    //   body: JSON.stringify({ ...cartItem }),
     // });
   }, []);
+
+  const getIdFromCart = async () => {
+    const response = await fetch(`http://localhost:3000/carts`);
+    const data = await response.json();
+    setCartId(data.map((x: any) => x.id));
+  };
+
+  console.log(cartId);
 
   const getData = async () => {
     const response = await fetch(`http://localhost:3000/products`);
