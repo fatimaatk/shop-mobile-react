@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import ProductsType from "../../model/productType";
-
+import cartDataItems from "../../model/cartDataItems";
 import { useAppSelector } from "../../store/hook";
 
 import CartProduct from "./CartProduct";
@@ -23,18 +23,43 @@ const Cart: React.FC = () => {
   const [randomProducts, setRandomProducts] = useState<ProductsType[]>([]);
 
   //produits dans cart
-  const [cartId, setCartId] = useState();
-  const productsInCart: ProductsType[] = items.map((x) => x.product);
-  const qtyPerProducts = items.map((x) => x.qty);
+  const [cartId, setCartId] = useState<cartDataItems[]>([] as any);
+  const [cookiesCartId, setCookiesCartId] = useCookies(["cartId"]);
+
+  const setCartCookies = async () => {
+    setCookiesCartId("cartId", cartId, { path: "/" });
+  };
+
+  let idCart: number = 1;
+  const exist = cookiesCartId.cartId.filter((x: any) => x === cartId);
+
+  useEffect(() => {
+    getIdFromCart();
+    setCartCookies();
+    if (exist) {
+      fetch(`http://localhost:3000/carts/${idCart}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          total: totalOrder.toFixed(2),
+          subTotal: subTotalOrder.toFixed(2),
+          tax: tax.toFixed(2),
+          items: [cartItem.items],
+        }),
+      });
+    } else {
+      fetch("http://localhost:3000/carts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: idCart++,
+        }),
+      });
+    }
+  }, [cartItem.items]);
 
   useEffect(() => {
     getData();
-    getIdFromCart();
-
-    // fetch("http://localhost:3000/carts", {
-    //   method: "PUT",
-    //   body: JSON.stringify({ ...cartItem }),
-    // });
   }, []);
 
   const getIdFromCart = async () => {
@@ -42,8 +67,6 @@ const Cart: React.FC = () => {
     const data = await response.json();
     setCartId(data.map((x: any) => x.id));
   };
-
-  console.log(cartId);
 
   const getData = async () => {
     const response = await fetch(`http://localhost:3000/products`);

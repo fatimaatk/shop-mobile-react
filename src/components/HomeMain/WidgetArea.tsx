@@ -45,22 +45,24 @@ const WidgetArea = () => {
               ))}
             </div>
           </div>
-          <div className="col-md-4">
-            <div className="single-product-widget">
-              <h2 className="product-wid-title">Recently Viewed</h2>
+          {myCookies && (
+            <div className="col-md-4">
+              <div className="single-product-widget">
+                <h2 className="product-wid-title">Recently Viewed</h2>
 
-              <Link to={`/products/recents`} className="wid-view-more">
-                View All
-              </Link>
-              {myCookies &&
-                myCookies
-                  .filter((value: any) => Object.keys(value).length !== 0)
-                  .splice(-3)
-                  .map((cookie: any, items: any) => (
-                    <WidgetsRecents cookie={cookie} key={items} />
-                  ))}
+                <Link to={`/products/recents`} className="wid-view-more">
+                  View All
+                </Link>
+                {myCookies &&
+                  myCookies
+                    .filter((value: any) => Object.keys(value).length !== 0)
+                    .splice(-3)
+                    .map((cookie: any, items: any) => (
+                      <WidgetsRecents cookie={cookie} key={items} />
+                    ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="col-md-4">
             <div className="single-product-widget">

@@ -29,16 +29,13 @@ export const categoriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getCategories.pending, (state) => {
-      console.log("pending");
       state.loading = true;
     });
     builder.addCase(getCategories.fulfilled, (state, { payload }) => {
-      console.log("fulfilled");
       state.loading = false;
       state.categories = payload;
     });
     builder.addCase(getCategories.rejected, (state) => {
-      console.log("rejected");
       state.loading = false;
     });
   },

@@ -4354,122 +4354,89 @@
   ],
   "carts": [
     {
-      "id": "e364b282-6460-4665-bfc8-1c5bb68f18ff",
-      "total": 123.12,
-      "subTotal": 123.12,
-      "tax": 14.7,
+      "total": "1328.40",
+      "subTotal": "1107.00",
+      "tax": "221.40",
       "items": [
-        {
-          "id": 5029,
-          "name": "sony xperia xz3",
-          "imageName": "sony-xperia-xz3-.jpg",
-          "price": 725,
-          "qty": 3
-        }
-      ]
-    },
-    {
-      "id": "jA8Sq0k",
-      "total": 123.12,
-      "subTotal": 123.12,
-      "tax": 14.7,
-      "items": [
-        {
-          "id": 5029,
-          "name": "sony xperia xz3",
-          "imageName": "sony-xperia-xz3-.jpg",
-          "price": 725,
-          "qty": 3
-        }
-      ]
-    },
-    {
-      "id": "KvKKciR"
-    },
-    {
-      "id": "QhSMrY7"
-    },
-    {
-      "id": "eqaGKnh"
-    },
-    {
-      "id": "RpHwREn"
-    },
-    {
-      "id": "XHji-gI"
-    },
-    {
-      "id": "_q6c-ZU"
-    },
-    {
-      "id": "ywOiRbf"
-    },
-    {
-      "id": "CzKKPUb"
-    },
-    {
-      "id": "4G6ZmjA"
-    },
-    {
-      "id": "ys-vtgg"
-    },
-    {
-      "id": "2oihkLN"
-    },
-    {
-      "id": "RcOIsl2"
-    },
-    {
-      "id": "W4RMU_v"
-    },
-    {
-      "id": "SyVAfF1"
-    },
-    {
-      "id": "Yg-ijS6"
+        [
+          {
+            "product": {
+              "id": 3023,
+              "name": "lg k50",
+              "imageName": "lg-k50-.jpg",
+              "price": 430,
+              "discountRate": 30,
+              "review": 3,
+              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta."
+            },
+            "qty": 1
+          },
+          {
+            "product": {
+              "id": 3016,
+              "name": "lg k20 2019",
+              "imageName": "lg-k20-2019.jpg",
+              "price": 677,
+              "discountRate": 22,
+              "review": 3,
+              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta."
+            },
+            "qty": 1
+          }
+        ]
+      ],
+      "id": "1"
     }
   ],
   "orders": [
     {
-      "id": "5239eb84-4a00-40c0-938d-e63d2abede7d",
-      "total": 123.12,
-      "subTotal": 123.12,
-      "tax": 14.7,
-      "items": [
-        {
-          "id": 5029,
-          "name": "sony xperia xz3",
-          "imageName": "sony-xperia-xz3-.jpg",
-          "price": 725,
-          "qty": 1
-        }
-      ],
-      "customer": {
-        "email": "titi@toto.com",
-        "phone": "06060606",
-        "note": "",
-        "billingAdress": {
-          "civility": "Mr",
-          "firstName": "test",
-          "lastName": "test",
-          "zipCode": "14789",
-          "street": "18 rue Goubet 3eme etage  ",
-          "companyName": "DECADE",
-          "county": "france",
-          "city": "Paris"
-        },
-        "shippingAdress": {
-          "civility": "Mr",
-          "firstName": "test",
-          "lastName": "test",
-          "zipCode": "14789",
-          "street": "18 rue Goubet 3eme etage  ",
-          "companyName": "DECADE",
-          "county": "france",
-          "city": "Paris"
-        }
+      "cartData": {
+        "total": "1328.40",
+        "subTotal": "1107.00",
+        "tax": "221.40",
+        "items": [
+          [
+            {
+              "product": {
+                "id": 3023,
+                "name": "lg k50",
+                "imageName": "lg-k50-.jpg",
+                "price": 430,
+                "discountRate": 30,
+                "review": 3,
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta."
+              },
+              "qty": 1
+            },
+            {
+              "product": {
+                "id": 3016,
+                "name": "lg k20 2019",
+                "imageName": "lg-k20-2019.jpg",
+                "price": 677,
+                "discountRate": 22,
+                "review": 3,
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta."
+              },
+              "qty": 1
+            }
+          ]
+        ],
+        "id": "1"
       },
-      "paymentMethod": "paypal"
+      "customer": {
+        "ship_to_different_address": false,
+        "payment_method": "payment_method_paypal",
+        "firstName": "TEST",
+        "lastName": "TEST",
+        "street": "TEST",
+        "city": "TEST",
+        "zipCode": "59000",
+        "email": "test@test.com",
+        "phone": "0303030300",
+        "civility": "Mlle"
+      },
+      "id": "1"
     }
   ]
 }
