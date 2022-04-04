@@ -43,14 +43,13 @@ const Payment = () => {
             />{" "}
             Cheque Payment{" "}
           </label>
-          {/* { === "payment_method_cheque" && (
-            <div className="payment_box payment_method_cheque">
-              <p>
-                Please send your cheque to Store Name, Store Street, Store Town,
-                Store State / County, Store Postcode.
-              </p>
-            </div>
-          )} */}
+
+          <div className="payment_box payment_method_cheque">
+            <p>
+              Please send your cheque to Store Name, Store Street, Store Town,
+              Store State / County, Store Postcode.
+            </p>
+          </div>
         </li>
         <li className="payment_method_paypal">
           <label htmlFor="payment_method_paypal">
@@ -76,14 +75,13 @@ const Payment = () => {
               What is PayPal?
             </a>
           </label>
-          {/* {order === "payment_method_paypal" && (
-            <div className="payment_box payment_method_paypal">
-              <p>
-                Pay via PayPal, you can pay with your credit card if you don’t
-                have a PayPal account.
-              </p>
-            </div>
-          )} */}
+
+          <div className="payment_box payment_method_paypal">
+            <p>
+              Pay via PayPal, you can pay with your credit card if you don’t
+              have a PayPal account.
+            </p>
+          </div>
         </li>
       </ul>
     </div>

@@ -4354,31 +4354,19 @@
   ],
   "carts": [
     {
-      "total": "1328.40",
-      "subTotal": "1107.00",
-      "tax": "221.40",
+      "total": "793.20",
+      "subTotal": "661.00",
+      "tax": "132.20",
       "items": [
         [
           {
             "product": {
-              "id": 3023,
-              "name": "lg k50",
-              "imageName": "lg-k50-.jpg",
-              "price": 430,
-              "discountRate": 30,
-              "review": 3,
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta."
-            },
-            "qty": 1
-          },
-          {
-            "product": {
-              "id": 3016,
-              "name": "lg k20 2019",
-              "imageName": "lg-k20-2019.jpg",
-              "price": 677,
-              "discountRate": 22,
-              "review": 3,
+              "id": 4005,
+              "name": "huawei mate 20 pro 1.jpg",
+              "imageName": "huawei-mate-20-pro-1.jpg",
+              "price": 661,
+              "discountRate": 28,
+              "review": 5,
               "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut. Suspendisse potenti. Nulla varius lectus id turpis dignissim porta."
             },
             "qty": 1
